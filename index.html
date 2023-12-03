@@ -94,29 +94,45 @@
                 <p>Sales Analytics</p>
             </div>
         </section> 
-        <div id="analytics-container">
-            <div class="analytics-display-container">
+        <div id="analytics-container">   
+            <div class="analytics-display-container"> 
                 <div class="analytics-data-container">
                     <div class="stat-box">
-                        <p class="stat-box-header">Q1 total</p>
-                        <p>12345</p>
+                        <p class="stat-box-header">Q1</p>
+                        <p class="stat-box-header">Total sales</p>
+                        <p id="q1-total-sales" class="copyOnClick"></p>
                     </div>
                     <div class="stat-box">
-                        <p class="stat-box-header">Q2 total</p>
-                        <p>12345</p>
+                        <p class="stat-box-header">Q2</p>
+                        <p class="stat-box-header">Total sales</p>
+                        <p id="q2-total-sales" class="copyOnClick"></p>
                     </div>
                     <div class="stat-box">
-                        <p class="stat-box-header">Q3 total</p>
-                        <p>12345</p>
+                        <p class="stat-box-header">Q3</p>
+                        <p class="stat-box-header">Total sales</p>
+                        <p id="q3-total-sales" class="copyOnClick"></p>
                     </div>
                     <div class="stat-box">
-                        <p class="stat-box-header">Q4 total</p>
-                        <p>12345</p>
+                        <p class="stat-box-header">Q4</p>
+                        <p class="stat-box-header">Total sales</p>
+                        <p id="q4-total-sales" class="copyOnClick"></p>
                     </div>
                 </div>
-                <div class="diagram-container"></div>
+                <div class="diagram-container">
+
+                </div>
             </div>
-            <div class="analytics-input-container"></div>
+            <div class="analytics-input-container">
+                <div class="year-selector-container">
+                    <label for="dm-year-picker">Select data set for year:</label>
+                    <select id="dm-year-picker" name="year">
+                        <option value="2021-data-set">2021</option>
+                        <option value="2022-data-set">2022</option>
+                        <option value="2023-data-set">2023</option>
+                    </select>
+                </div>
+
+            </div>
         </div>
         <div id="tasks-container">
 
