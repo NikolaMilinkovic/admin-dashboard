@@ -129,9 +129,33 @@
                         <option value="2021-data-set">2021</option>
                         <option value="2022-data-set">2022</option>
                         <option value="2023-data-set">2023</option>
+                        <option value="2024-data-set">2024</option>
                     </select>
                 </div>
-
+                <div class="month-selector-container">
+                    
+                    <label for="dm-month-picker">Select month to edit values:</label>
+                    <div class="month-input-container">
+                        <select id="dm-month-picker" name="month">
+                            <option value="Jan">January</option>
+                            <option value="Feb">February</option>
+                            <option value="Mar">March</option>
+                            <option value="Apr">April</option>
+                            <option value="May">May</option>
+                            <option value="Jun">June</option>
+                            <option value="Jul">July</option>
+                            <option value="Aug">August</option>
+                            <option value="Sep">September</option>
+                            <option value="Oct">October</option>
+                            <option value="Nov">November</option>
+                            <option value="Dec">December</option>
+                        </select>
+                        <div class="input-button-container">
+                            <input type="text" id="valueInput" placeholder="Enter a value">
+                            <button id="addMonthValue" onclick="addMonthValue()">Add Value</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="tasks-container">

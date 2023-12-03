@@ -1,4 +1,8 @@
-
+/* 
+    Admin Dashboard
+    Written by Nikola Milinkovic
+    As part of The Odin Project curriculum
+ */
 
 // Search input field animation
 const searchField = document.getElementById("search-input");
@@ -19,6 +23,66 @@ const { csv, select, scaleLinear, extent, axisLeft, axisBottom } = d3;
 const container = select('.diagram-container');
 const width = container.node().clientWidth;
 const height = container.node().clientHeight;
+
+// Data sets for each year
+const dataSet2021 = [
+    { Month: "Jan", Sales: 26 },
+    { Month: "Feb", Sales: 43 },
+    { Month: "Mar", Sales: 33 },
+    { Month: "Apr", Sales: 18 },
+    { Month: "May", Sales: 22 },
+    { Month: "Jun", Sales: 53 },
+    { Month: "Jul", Sales: 45 },
+    { Month: "Aug", Sales: 65 },
+    { Month: "Sep", Sales: 51 },
+    { Month: "Oct", Sales: 48 },
+    { Month: "Nov", Sales: 76 },
+    { Month: "Dec", Sales: 98 }
+];
+const dataSet2022 = [
+    { Month: "Jan", Sales: 126 },
+    { Month: "Feb", Sales: 143 },
+    { Month: "Mar", Sales: 110 },
+    { Month: "Apr", Sales: 98 },
+    { Month: "May", Sales: 164 },
+    { Month: "Jun", Sales: 156 },
+    { Month: "Jul", Sales: 190 },
+    { Month: "Aug", Sales: 118 },
+    { Month: "Sep", Sales: 123 },
+    { Month: "Oct", Sales: 142 },
+    { Month: "Nov", Sales: 122 },
+    { Month: "Dec", Sales: 110 }
+];
+const dataSet2023 = [
+    { Month: "Jan", Sales: 145 },
+    { Month: "Feb", Sales: 134 },
+    { Month: "Mar", Sales: 110 },
+    { Month: "Apr", Sales: 128 },
+    { Month: "May", Sales: 46 },
+    { Month: "Jun", Sales: 156 },
+    { Month: "Jul", Sales: 190 },
+    { Month: "Aug", Sales: 128 },
+    { Month: "Sep", Sales: 93 },
+    { Month: "Oct", Sales: 142 },
+    { Month: "Nov", Sales: 102 },
+    { Month: "Dec", Sales: 170 }
+];
+const dataSet2024 = [
+    { Month: "Jan", Sales: 145 },
+    { Month: "Feb", Sales: 134 },
+    { Month: "Mar", Sales: 0 },
+    { Month: "Apr", Sales: 0 },
+    { Month: "May", Sales: 0 },
+    { Month: "Jun", Sales: 0 },
+    { Month: "Jul", Sales: 0 },
+    { Month: "Aug", Sales: 0 },
+    { Month: "Sep", Sales: 0 },
+    { Month: "Oct", Sales: 0 },
+    { Month: "Nov", Sales: 0 },
+    { Month: "Dec", Sales: 0 }
+];
+
+// Logic for changing chart data sets
 document.getElementById('dm-year-picker').addEventListener("change", changeDataSet);
 function changeDataSet (){
     const selectedYear = document.getElementById('dm-year-picker').value;
@@ -26,54 +90,19 @@ function changeDataSet (){
     switch(selectedYear){
         case "2021-data-set":
 
-            salesChartData = [
-                { Month: "Jan", Sales: 26 },
-                { Month: "Feb", Sales: 43 },
-                { Month: "Mar", Sales: 33 },
-                { Month: "Apr", Sales: 18 },
-                { Month: "May", Sales: 22 },
-                { Month: "Jun", Sales: 53 },
-                { Month: "Jul", Sales: 45 },
-                { Month: "Aug", Sales: 65 },
-                { Month: "Sep", Sales: 51 },
-                { Month: "Oct", Sales: 48 },
-                { Month: "Nov", Sales: 76 },
-                { Month: "Dec", Sales: 98 }
-            ];
+            salesChartData = dataSet2021;
             main();
         break;
         case "2022-data-set":
-            salesChartData = [
-                { Month: "Jan", Sales: 126 },
-                { Month: "Feb", Sales: 143 },
-                { Month: "Mar", Sales: 110 },
-                { Month: "Apr", Sales: 98 },
-                { Month: "May", Sales: 164 },
-                { Month: "Jun", Sales: 156 },
-                { Month: "Jul", Sales: 190 },
-                { Month: "Aug", Sales: 118 },
-                { Month: "Sep", Sales: 123 },
-                { Month: "Oct", Sales: 142 },
-                { Month: "Nov", Sales: 122 },
-                { Month: "Dec", Sales: 110 }
-            ];
+            salesChartData = dataSet2022;
             main();
         break;
         case "2023-data-set":
-            salesChartData = [
-                { Month: "Jan", Sales: 145 },
-                { Month: "Feb", Sales: 134 },
-                { Month: "Mar", Sales: 110 },
-                { Month: "Apr", Sales: 128 },
-                { Month: "May", Sales: 46 },
-                { Month: "Jun", Sales: 156 },
-                { Month: "Jul", Sales: 190 },
-                { Month: "Aug", Sales: 128 },
-                { Month: "Sep", Sales: 93 },
-                { Month: "Oct", Sales: 142 },
-                { Month: "Nov", Sales: 102 },
-                { Month: "Dec", Sales: 170 }
-            ];
+            salesChartData = dataSet2023;
+            main();
+        break;
+        case "2024-data-set":
+            salesChartData = dataSet2024;
             main();
         break;
     }
@@ -245,13 +274,21 @@ changeDataSet();
 
 // Code that handles copy upon click on Q1,Q2,Q3,Q4 total data box
 const statBoxes = Array.from(document.getElementsByClassName('stat-box'));
+
+let isFunctionRunning = false;
+
+// Adds event listener for each box
 statBoxes.forEach(statBox =>{
     statBox.addEventListener('click', function() {
 
+        // Copies the isntance of text
         let copyText = this.querySelector('.copyOnClick').innerText;
         const copyContent = async () => {
             try{
+                if (isFunctionRunning === true)
+                    return;
                 await navigator.clipboard.writeText(copyText);
+                isFunctionRunning = true;
 
                 // Color change & text display
                 this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
@@ -264,6 +301,7 @@ statBoxes.forEach(statBox =>{
                     this.style.color = '';
                     this.querySelector('.copyOnClick').innerText = copyText;
                     this.querySelector('.copyOnClick').style.fontSize = '';
+                    isFunctionRunning = false;
                 }, 500);
             }
             catch(err){

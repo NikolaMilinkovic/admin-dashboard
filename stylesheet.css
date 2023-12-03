@@ -1,3 +1,9 @@
+/* 
+    Admin Dashboard
+    Written by Nikola Milinkovic
+    As part of The Odin Project curriculum
+ */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -62,7 +68,8 @@ table {
     --logo-size: clamp(26px, 8vw, 34px);
     --logo-text-size: clamp(26px, 8vw, 46px);
     --analytics-label-size: clamp(12px, 4vw, 16px);
-    --analytics-text-size: clamp(16px, 6vw, 22px);
+    --analytics-text-size: clamp(16px, 6vw, 20px);
+    --analytics-input-text-size: clamp(16px, 6vw, 20px);
 
 }
 label{
@@ -215,7 +222,7 @@ a:hover{
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
 }
-#analytics-container{
+div#analytics-container{
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
     margin: 0rem 4rem;
@@ -246,6 +253,7 @@ a:hover{
     color: var(--nav-text-color);
     padding: 8%;
     flex-direction: column;
+    user-select: none;
 }
 .stat-box>p:last-child {
     font-size: var(--analytics-text-size);
@@ -272,9 +280,52 @@ a:hover{
     color: var(--text-color-white);
     font-size: var(--analytics-label-size);
 }
-.year-selector-container{
+.year-selector-container, .month-selector-container{
     display: flex;
     margin: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+}
+.year-selector-container{
+    margin-bottom: 2rem;
+}
+.month-input-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.input-button-container{
+    display: flex;
+    gap: 1rem;
+}
+label{
+    font-size: var(--analytics-input-label-size);
+}
+select{
+    font-size: var(--analytics-input-text-size);
+}
+option, select{ 
+    background-color: var(--main-background-color);
+    color: var(--text-color-white);
+    border: 1px solid var(--border-color);
+}
+select:focus,
+#valueInput:focus,
+button#addMonthValue:focus{
+    outline: 1px solid var(--hover-color);
+}
+button#addMonthValue{
+    font-size: var(--analytics-label-size);
+    background-color: var(--nav-hover-color);
+    min-width: 100px;
+    color: var(--text-color-white);
+    border: 1px solid var(--border-color);
+}
+button#addMonthValue:hover{
+    background-color: #574cad; 
+}
+button#addMonthValue:active{
+    scale: 0.9;
 }
 #notes-container{
     height: 500px;
@@ -344,10 +395,19 @@ a:hover{
     align-items: center;
     justify-content: center;
 }
+
+input#valueInput{
+    background-color: var(--main-background-color);
+    display: flex;
+    border: 1px solid var(--border-color);
+    margin-right: auto;
+    font-size: var(--analytics-input-text-size);
+    width: clamp(200px, 8vw, 220px);
+}
 input{
     background-color: var(--main-background-color);
-    margin-right: 0.2rem;
     border:none;
+    margin-right: 0.2rem;
     color: var(--text-color-white);
     font-size: 18px;
     display: none;
