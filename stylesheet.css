@@ -402,7 +402,7 @@ input#valueInput{
     border: 1px solid var(--border-color);
     margin-right: auto;
     font-size: var(--analytics-input-text-size);
-    width: clamp(200px, 8vw, 220px);
+    width: 200px;
 }
 input{
     background-color: var(--main-background-color);
