@@ -72,9 +72,6 @@ table {
     --analytics-input-text-size: clamp(16px, 4vw, 18px);
 
 }
-label{
-    font-size: 16px;
-}
 body{
     background-color: var(--main-background-color);
 }
@@ -302,6 +299,7 @@ div#analytics-container{
 }
 label{
     font-size: var(--analytics-input-label-size);
+    color: var(--nav-text-color);
 }
 select{
     font-size: var(--analytics-input-text-size);
