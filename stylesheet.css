@@ -204,6 +204,9 @@ div.card.active {
 div.card-svg.active{
     filter: invert(35%) sepia(66%) saturate(506%) hue-rotate(207deg) brightness(105%) contrast(112%);
 }
+.card:active{
+    scale: 0.98;
+}
 .card:hover,
 #side-card:hover,
 #analytics-container:hover,
@@ -422,7 +425,6 @@ button#btnNextMonth:active{
         scale: 1.2;
     }
 }
-
 .svg{
     height: var(--nav-bar-link-size);
     width: var(--nav-bar-link-size);
