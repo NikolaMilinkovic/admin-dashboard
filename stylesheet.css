@@ -276,7 +276,7 @@ div#analytics-container{
 .analytics-input-container{
     border-left: 1px solid var(--border-color); 
     color: var(--text-color-white);
-    max-width: 350px;
+    max-width: 330px;
 }
 .analytics-input-container>*{
     color: var(--text-color-white);
@@ -402,9 +402,9 @@ input#valueInput{
     background-color: var(--main-background-color);
     display: flex;
     border: 1px solid var(--border-color);
-    margin-right: auto;
     font-size: var(--analytics-input-text-size);
-    width: 200px;
+    width: 170px;
+    margin-right: auto;
 }
 input{
     background-color: var(--main-background-color);
