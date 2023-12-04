@@ -321,13 +321,14 @@ QCompBoxes.forEach(qBox =>{
     qBox.addEventListener('click', function() {
 
         // Copies the isntance of text
-        let copyText = this.querySelector('.q-comparison').innerText;
+        let copyText = `${this.querySelector('.q-comparison-label').innerText} ${this.querySelector('.q-comparison').innerText}`;
         const copyContent = async () => {
             try{
                 if (isFunctionRunning === true)
                     return;
                 await navigator.clipboard.writeText(copyText);
                 isFunctionRunning = true;
+                copyText = this.querySelector('.q-comparison').innerText;
 
                 // Color change & text display
                 this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
@@ -337,7 +338,6 @@ QCompBoxes.forEach(qBox =>{
                 let getLabelColor = this.querySelector('.q-comparison-label').style.color;
                 this.querySelector('.q-comparison').style.color = '#d4d4d4';
                 this.querySelector('.q-comparison-label').style.color = '#d4d4d4';
-                console.log(getColor);
                 this.style.backgroundColor = '#695BD1';
                 this.style.color = '#d4d4d4';
                 setTimeout(() => {
@@ -476,7 +476,7 @@ function calcQStats(){
     const q2q3 = document.getElementById('q-comparison-2');
     const q3q4 = document.getElementById('q-comparison-3');
     if(calculatePercentageDifference(Q1, Q2)>= 0){
-        q1q2.textContent = `Sales increased by ${calculatePercentageDifference(Q1, Q2)}%`;
+        q1q2.textContent = `Sales increased ${calculatePercentageDifference(Q1, Q2)}%`;
         q1q2.style.color = 'forestgreen';
     }
     else if(isNaN(calculatePercentageDifference(Q1, Q2))){
@@ -484,12 +484,12 @@ function calcQStats(){
         q1q2.style.color = '#728197';
     }
     else{
-        q1q2.textContent = `Sales decreased by ${calculatePercentageDifference(Q1, Q2)}%`;
+        q1q2.textContent = `Sales decreased ${calculatePercentageDifference(Q1, Q2)}%`;
         q1q2.style.color = 'crimson';
     }
 
     if(calculatePercentageDifference(Q2, Q3)>= 0){
-        q2q3.textContent = `Sales increased by ${calculatePercentageDifference(Q2, Q3)}%`;
+        q2q3.textContent = `Sales increased ${calculatePercentageDifference(Q2, Q3)}%`;
         q2q3.style.color = 'forestgreen';
     }
     else if(isNaN(calculatePercentageDifference(Q2, Q3))){
@@ -497,12 +497,12 @@ function calcQStats(){
         q2q3.style.color = '#728197';
     }
     else{
-        q2q3.textContent = `Sales decreased by ${calculatePercentageDifference(Q2, Q3)}%`;
+        q2q3.textContent = `Sales decreased ${calculatePercentageDifference(Q2, Q3)}%`;
         q2q3.style.color = 'crimson';
     }
 
     if(calculatePercentageDifference(Q3, Q4)>= 0){
-        q3q4.textContent = `Sales increased by ${calculatePercentageDifference(Q3, Q4)}%`;
+        q3q4.textContent = `Sales increased ${calculatePercentageDifference(Q3, Q4)}%`;
         q3q4.style.color = 'forestgreen';
     }
     else if(isNaN(calculatePercentageDifference(Q3, Q4))){
@@ -510,7 +510,7 @@ function calcQStats(){
         q3q4.style.color = '#728197';
     }
     else{
-        q3q4.textContent = `Sales decreased by ${calculatePercentageDifference(Q3, Q4)}%`;
+        q3q4.textContent = `Sales decreased ${calculatePercentageDifference(Q3, Q4)}%`;
         q3q4.style.color = 'crimson';
     }
 }
@@ -548,41 +548,42 @@ function clearYearInput(){
     inputField.focus();
 }
 
+document.getElementById('option1').classList.add('active');
+document.getElementById('default-svg').style.filter = 'invert(35%) sepia(66%) saturate(506%) hue-rotate(207deg) brightness(105%) contrast(112%)';
 
+// Chart select cards logic
+document.addEventListener('DOMContentLoaded', function () {
 
-// case "new-data-set":
+const cards = document.querySelectorAll('.card');
 
-// const datasetId = document.getElementById('valueInputYear').value;
+    cards.forEach(function (button){
+        button.addEventListener('click', function(){
 
-// // Check if the dataset with the given identifier already exists
-// const existingDataset = customDatasets.find(dataset => dataset.id === datasetId);
+            handleClick(button.id);
 
-// if (existingDataset) {
-//     alert("Dataset with the same identifier already exists. Please choose a different identifier.");
-// } else {
-//     const newDataset = {
-//         id: datasetId,
-//         data: [
-//         { Month: "Jan", Sales: 0 },
-//         { Month: "Feb", Sales: 0 },
-//         { Month: "Mar", Sales: 0 },
-//         { Month: "Apr", Sales: 0 },
-//         { Month: "May", Sales: 0 },
-//         { Month: "Jun", Sales: 0 },
-//         { Month: "Jul", Sales: 0 },
-//         { Month: "Aug", Sales: 0 },
-//         { Month: "Sep", Sales: 0 },
-//         { Month: "Oct", Sales: 0 },
-//         { Month: "Nov", Sales: 0 },
-//         { Month: "Dec", Sales: 0 }],
-//     };
+            cards.forEach(function (btn){
+                btn.classList.remove('active');
+                
+            })
 
-//     customDatasets.push(newDataset);
-//     // Code to handle this specific dataset
-//     monthIndex = newDataset.data.findIndex(entry => entry.Month === dsMonth);
-//     if (monthIndex !== -1) {
-//         newDataset.data[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
-//     }
-//     main();
-// }
-// break;
+            cards.forEach(function (card){
+                const svg = card.querySelector('.card-svg');
+                if (svg)
+                    svg.style.filter = '';
+            })
+
+            button.classList.add('active');
+            const svg = button.querySelector('.card-svg');
+            if (svg){
+                const isActive = button.classList.contains('active');
+                svg.style.filter = isActive ? 'invert(35%) sepia(66%) saturate(506%) hue-rotate(207deg) brightness(105%) contrast(112%)' : '';
+            }
+        });
+    });
+
+    function handleClick(optionId) {
+        console.log('Clicked option:', optionId);
+
+      }
+});
+

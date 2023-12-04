@@ -181,7 +181,7 @@ a:hover{
     grid-template-columns: repeat(4, 1fr);
     gap: 3rem;
 }
-#card{
+div.card{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -192,21 +192,24 @@ a:hover{
     min-width: 80px;
     padding: 1rem;
     border: 1px solid var(--border-color);
+    user-select: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--nav-text-color);
 }
-#card:hover,
+div.card.active {
+    border: 1px solid var(--hover-color);
+    color: var(--hover-color) !important;
+}
+div.card-svg.active{
+    filter: invert(35%) sepia(66%) saturate(506%) hue-rotate(207deg) brightness(105%) contrast(112%);
+}
+.card:hover,
 #side-card:hover,
 #analytics-container:hover,
 #tasks-container:hover,
 #notes-container:hover {
     border: 1px solid var(--hover-color); 
-}
-#card>p{
-    font-size: 16px;
-    color: var(--nav-text-color);
-}
-#card>p:last-child{
-    font-size: 36px;
-    color: lightgray;
 }
 #side-content-section{
     margin-top: 3rem;
@@ -254,6 +257,7 @@ div#analytics-container{
     padding: 8%;
     flex-direction: column;
     user-select: none;
+    cursor: pointer;
 }
 .stat-box>p:last-child {
     font-size: var(--analytics-text-size);
@@ -315,9 +319,6 @@ label,
 #create-year-label{
     font-size: var(--analytics-input-label-size);
     color: var(--nav-text-color);
-}
-#create-year-label{
-
 }
 select{
     font-size: var(--analytics-input-text-size);
@@ -390,12 +391,8 @@ button#btnNextMonth:active{
     border: 1px solid var(--border-color);
     padding: 1rem;
     user-select: none;
+    cursor: pointer;
 }
-
-
-
-
-
 #notes-container{
     height: 500px;
     background-color: var(--card-background-color);
@@ -429,6 +426,12 @@ button#btnNextMonth:active{
 .svg{
     height: var(--nav-bar-link-size);
     width: var(--nav-bar-link-size);
+    filter: invert(45%) sepia(11%) saturate(1017%) hue-rotate(177deg) brightness(89%) contrast(82%);
+    margin-right: 5%;
+}
+.card-svg{
+    height: 40%;
+    width: 40%;
     filter: invert(45%) sepia(11%) saturate(1017%) hue-rotate(177deg) brightness(89%) contrast(82%);
     margin-right: 5%;
 }
