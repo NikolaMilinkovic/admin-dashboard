@@ -60,16 +60,16 @@ table {
     --nav-hover-color: #353946;
     --nav-text-color: #728197;
     --text-color-white: #d4d4d4;
-    --nav-bar-link-size: clamp(12px, 4vw, 22px);
+    --nav-bar-link-size: clamp(12px, 4vw, 20px);
     --nav-bar-label-size: clamp(10px, 2.5vw, 16px);
     --hover-color: #695BD1;
     --card-background-color: #232631;
     /* --svg-color: #606F86; */
-    --logo-size: clamp(26px, 8vw, 34px);
-    --logo-text-size: clamp(26px, 8vw, 46px);
+    --logo-size: clamp(26px, 5vw, 34px);
+    --logo-text-size: clamp(26px, 6vw, 46px);
     --analytics-label-size: clamp(12px, 4vw, 16px);
-    --analytics-text-size: clamp(16px, 6vw, 20px);
-    --analytics-input-text-size: clamp(16px, 6vw, 20px);
+    --analytics-text-size: clamp(16px, 4vw, 18px);
+    --analytics-input-text-size: clamp(16px, 4vw, 18px);
 
 }
 label{
