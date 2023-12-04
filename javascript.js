@@ -86,7 +86,6 @@ const dataSet2024 = [
 document.getElementById('dm-year-picker').addEventListener("change", changeDataSet);
 function changeDataSet (){
     const selectedYear = document.getElementById('dm-year-picker').value;
-    console.log(selectedYear);
     switch(selectedYear){
         case "2021-data-set":
 
@@ -246,8 +245,7 @@ const main = () => {
 
     // Call the updateQSales function with your data after the chart is drawn
     updateQSales(salesChartData);
-
-    console.log("main funkcija je pokrenuta");
+    calcQStats();
 };
 
 main();
@@ -314,6 +312,52 @@ statBoxes.forEach(statBox =>{
     });
 })
 
+// Code that handles copy upon click on Q comparison boxes
+const QCompBoxes = Array.from(document.getElementsByClassName('q-comparison-container'));
+
+// Adds event listener for each box
+QCompBoxes.forEach(qBox =>{
+    qBox.addEventListener('click', function() {
+
+        // Copies the isntance of text
+        let copyText = this.querySelector('.q-comparison').innerText;
+        const copyContent = async () => {
+            try{
+                if (isFunctionRunning === true)
+                    return;
+                await navigator.clipboard.writeText(copyText);
+                isFunctionRunning = true;
+
+                // Color change & text display
+                this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
+                this.querySelector('.q-comparison').innerText = 'Value copied!';
+                this.querySelector('.q-comparison').style.fontSize = '18px';
+                let getColor = this.querySelector('.q-comparison').style.color;
+                let getLabelColor = this.querySelector('.q-comparison-label').style.color;
+                this.querySelector('.q-comparison').style.color = '#d4d4d4';
+                this.querySelector('.q-comparison-label').style.color = '#d4d4d4';
+                console.log(getColor);
+                this.style.backgroundColor = '#695BD1';
+                this.style.color = '#d4d4d4';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
+                    this.querySelector('.q-comparison').innerText = copyText;
+                    this.querySelector('.q-comparison').style.fontSize = '';
+                    this.querySelector('.q-comparison').style.color = getColor;
+                    this.querySelector('.q-comparison-label').style.color = getLabelColor;
+                    isFunctionRunning = false;
+
+                }, 500);
+            }
+            catch(err){
+                console.error('Copy to clipboard failed: ', err);
+            }
+        }
+        copyContent();
+    });
+})
+
 // Logic for adding new values to diagram
 document.getElementById('addMonthValue').addEventListener('click', addMonthValue);
 function addMonthValue(){
@@ -326,33 +370,48 @@ function addMonthValue(){
         case "2021-data-set":
             monthIndex = dataSet2021.findIndex(entry => entry.Month === dsMonth);
             if(monthIndex !== -1){
-                dataSet2021[monthIndex].Sales = parseInt(userInput) || 0;
+                dataSet2021[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
             }
             main();
+            clearMonthInput();
+            calcQStats();
         break;
         case "2022-data-set":
             monthIndex = dataSet2022.findIndex(entry => entry.Month === dsMonth);
             if(monthIndex !== -1){
-                dataSet2022[monthIndex].Sales = parseInt(userInput) || 0;
+                dataSet2022[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
             }
             main();
+            clearMonthInput();
+            calcQStats();
         break;
         case "2023-data-set":
             monthIndex = dataSet2023.findIndex(entry => entry.Month === dsMonth);
             if(monthIndex !== -1){
-                dataSet2023[monthIndex].Sales = parseInt(userInput) || 0;
+                dataSet2023[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
             }
             main();
+            clearMonthInput();
+            calcQStats();
         break;
         case "2024-data-set":
             monthIndex = dataSet2024.findIndex(entry => entry.Month === dsMonth);
             if(monthIndex !== -1){
-                dataSet2024[monthIndex].Sales = parseInt(userInput) || 0;
+                dataSet2024[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
             }
             main();
+            clearMonthInput();
+            calcQStats();
         break;
     }
 };
+
+// Clears the month input field
+function clearMonthInput(){
+    const inputField = document.getElementById('valueInput');
+    inputField.value = '';
+    inputField.focus();
+}
 
 // Logic btnNextYear & btnPreviousYear
 document.getElementById('btnNextYear').addEventListener('click', function(){
@@ -376,6 +435,7 @@ function nextYear(){
     let nextIndex = (selectedYearIndex + 1) % 12;
     yearPicker.value = yearPicker.options[nextIndex].value;
     changeDataSet();
+    calcQStats();
 }
 function previousYear(){
     selectedYearIndex = yearPicker.selectedIndex;
@@ -383,6 +443,7 @@ function previousYear(){
     let previousIndex = (selectedYearIndex - 1 + 12) % 12;
     yearPicker.value = yearPicker.options[previousIndex].value;
     changeDataSet();
+    calcQStats();
 }
 
 // Logic btnNextMonth & btnPreviousMonth
@@ -403,3 +464,124 @@ function previousMonth(){
     let previousIndex = (selectedMonthIndex - 1) % 12;
     monthPicker.value = monthPicker.options[previousIndex].value;
 }
+
+// Logic for calculating Q-statistics
+function calcQStats(){
+    let Q1 = document.getElementById('q1-total-sales').textContent;
+    let Q2 = document.getElementById('q2-total-sales').textContent;
+    let Q3 = document.getElementById('q3-total-sales').textContent;
+    let Q4 = document.getElementById('q4-total-sales').textContent;
+    const q1q2 = document.getElementById('q-comparison-1');
+    const q2q3 = document.getElementById('q-comparison-2');
+    const q3q4 = document.getElementById('q-comparison-3');
+    if(calculatePercentageDifference(Q1, Q2)>= 0){
+        q1q2.textContent = `Sales increased by ${calculatePercentageDifference(Q1, Q2)}%`;
+        q1q2.style.color = 'forestgreen';
+    }
+    else if(isNaN(calculatePercentageDifference(Q1, Q2))){
+        q1q2.textContent = `Data not available`;
+        q1q2.style.color = '#728197';
+    }
+    else{
+        q1q2.textContent = `Sales decreased by ${calculatePercentageDifference(Q1, Q2)}%`;
+        q1q2.style.color = 'crimson';
+    }
+
+    if(calculatePercentageDifference(Q2, Q3)>= 0){
+        q2q3.textContent = `Sales increased by ${calculatePercentageDifference(Q2, Q3)}%`;
+        q2q3.style.color = 'forestgreen';
+    }
+    else if(isNaN(calculatePercentageDifference(Q2, Q3))){
+        q2q3.textContent = `Data not available`;
+        q2q3.style.color = '#728197';
+    }
+    else{
+        q2q3.textContent = `Sales decreased by ${calculatePercentageDifference(Q2, Q3)}%`;
+        q2q3.style.color = 'crimson';
+    }
+
+    if(calculatePercentageDifference(Q3, Q4)>= 0){
+        q3q4.textContent = `Sales increased by ${calculatePercentageDifference(Q3, Q4)}%`;
+        q3q4.style.color = 'forestgreen';
+    }
+    else if(isNaN(calculatePercentageDifference(Q3, Q4))){
+        q3q4.textContent = `Data not available`;
+        q3q4.style.color = '#728197';
+    }
+    else{
+        q3q4.textContent = `Sales decreased by ${calculatePercentageDifference(Q3, Q4)}%`;
+        q3q4.style.color = 'crimson';
+    }
+}
+
+function calculatePercentageDifference(firstValue, secondValue) {
+    if (firstValue === 0) {
+        // Handle the case where the old value is zero to avoid division by zero
+        return secondValue === 0 ? 0 : Infinity;
+    }
+
+    const percentageDifference = (secondValue - firstValue) / firstValue * 100;
+    if (percentageDifference < 0){
+        return `${parseFloat(percentageDifference.toFixed(2))}`;
+    }
+    else{
+        return `${parseFloat(percentageDifference.toFixed(2))}`;
+    }
+}
+
+// Logic for adding new year to the data set
+// Very difficult for now and my current knowledge level
+// document.getElementById("valueInputYear").disabled = true;
+
+document.getElementById('addYearValue').addEventListener('click', addNewYear);
+
+function addNewYear(){
+    dsYear.value = "new-data-set";
+    clearYearInput();
+}
+
+// Clears the year input field
+function clearYearInput(){
+    const inputField = document.getElementById('valueInputYear');
+    inputField.value = '';
+    inputField.focus();
+}
+
+
+
+// case "new-data-set":
+
+// const datasetId = document.getElementById('valueInputYear').value;
+
+// // Check if the dataset with the given identifier already exists
+// const existingDataset = customDatasets.find(dataset => dataset.id === datasetId);
+
+// if (existingDataset) {
+//     alert("Dataset with the same identifier already exists. Please choose a different identifier.");
+// } else {
+//     const newDataset = {
+//         id: datasetId,
+//         data: [
+//         { Month: "Jan", Sales: 0 },
+//         { Month: "Feb", Sales: 0 },
+//         { Month: "Mar", Sales: 0 },
+//         { Month: "Apr", Sales: 0 },
+//         { Month: "May", Sales: 0 },
+//         { Month: "Jun", Sales: 0 },
+//         { Month: "Jul", Sales: 0 },
+//         { Month: "Aug", Sales: 0 },
+//         { Month: "Sep", Sales: 0 },
+//         { Month: "Oct", Sales: 0 },
+//         { Month: "Nov", Sales: 0 },
+//         { Month: "Dec", Sales: 0 }],
+//     };
+
+//     customDatasets.push(newDataset);
+//     // Code to handle this specific dataset
+//     monthIndex = newDataset.data.findIndex(entry => entry.Month === dsMonth);
+//     if (monthIndex !== -1) {
+//         newDataset.data[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
+//     }
+//     main();
+// }
+// break;

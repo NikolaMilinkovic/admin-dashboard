@@ -261,7 +261,8 @@ div#analytics-container{
     align-items: center;
     justify-content: center;
 }
-.stat-box:hover{
+.stat-box:hover,
+.q-comparison-container:hover{
     border: 1px solid var(--hover-color);   
 }
 #tasks-section{
@@ -306,9 +307,15 @@ select#dm-year-picker{
     display: flex;
     gap: 1rem;
 }
-label{
+label,
+#statistics-header,
+.q-comparison-label,
+#create-year-label{
     font-size: var(--analytics-input-label-size);
     color: var(--nav-text-color);
+}
+#create-year-label{
+
 }
 select{
     font-size: var(--analytics-input-text-size);
@@ -320,6 +327,8 @@ option, select{
 }
 select:focus,
 #valueInput:focus,
+#valueInputYear:focus,
+button#addYearValue:focus,
 button#addMonthValue:focus,
 button#btnPreviousMonth:focus,
 button#btnNextMonth:focus,
@@ -335,24 +344,56 @@ button#btnNextYear{
     background-color: var(--nav-hover-color);
     color: var(--text-color-white);
     border: 1px solid var(--border-color);
+    user-select: none;
 }
-button#addMonthValue{
+button#addMonthValue,
+button#addYearValue{
     font-size: var(--analytics-label-size);
     background-color: var(--nav-hover-color);
     min-width: 100px;
     color: var(--text-color-white);
     border: 1px solid var(--border-color);
+    user-select: none;
 }
+button#addYearValue:hover,
 button#addMonthValue:hover,
 button#btnPreviousMonth:hover,
-button#btnNextMonth:hover{
+button#btnNextMonth:hover,
+button#btnNextYear:hover,
+button#btnPreviousYear:hover{
     background-color: #574cad; 
 }
+button#addYearValue:active,
 button#addMonthValue:active,
 button#btnPreviousMonth:active,
 button#btnNextMonth:active{
     scale: 0.9;
 }
+.main-statistics-container{
+    margin: 1rem;
+}
+#statistics-header{
+    margin-bottom: 1rem;
+}
+.q-comparison-label{
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+.q-comparison{
+    color: var(--text-color-white);
+    font-size: var(--analytics-text-size);
+    margin-left: 1rem;
+}
+.q-comparison-container{
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    user-select: none;
+}
+
+
+
+
+
 #notes-container{
     height: 500px;
     background-color: var(--card-background-color);
@@ -422,7 +463,8 @@ button#btnNextMonth:active{
     justify-content: center;
 }
 
-input#valueInput{
+input#valueInput,
+input#valueInputYear{
     background-color: var(--main-background-color);
     display: flex;
     border: 1px solid var(--border-color);
@@ -488,3 +530,9 @@ footer{
     border-top: 1px solid var(--border-color);
     margin-left: 15vw;
 }
+
+/* .q-comparison-container.clicked-box {
+    background-color: #695BD1;
+    color: #d4d4d4 !important;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+} */
