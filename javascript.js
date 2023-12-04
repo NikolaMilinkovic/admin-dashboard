@@ -246,6 +246,8 @@ const main = () => {
 
     // Call the updateQSales function with your data after the chart is drawn
     updateQSales(salesChartData);
+
+    console.log("main funkcija je pokrenuta");
 };
 
 main();
@@ -312,4 +314,92 @@ statBoxes.forEach(statBox =>{
     });
 })
 
+// Logic for adding new values to diagram
+document.getElementById('addMonthValue').addEventListener('click', addMonthValue);
+function addMonthValue(){
+    let dsYear = document.getElementById('dm-year-picker').value;
+    let dsMonth = document.getElementById('dm-month-picker').value;
+    let userInput = document.getElementById('valueInput').value;
+    let monthIndex;
+    
+    switch(dsYear){
+        case "2021-data-set":
+            monthIndex = dataSet2021.findIndex(entry => entry.Month === dsMonth);
+            if(monthIndex !== -1){
+                dataSet2021[monthIndex].Sales = parseInt(userInput) || 0;
+            }
+            main();
+        break;
+        case "2022-data-set":
+            monthIndex = dataSet2022.findIndex(entry => entry.Month === dsMonth);
+            if(monthIndex !== -1){
+                dataSet2022[monthIndex].Sales = parseInt(userInput) || 0;
+            }
+            main();
+        break;
+        case "2023-data-set":
+            monthIndex = dataSet2023.findIndex(entry => entry.Month === dsMonth);
+            if(monthIndex !== -1){
+                dataSet2023[monthIndex].Sales = parseInt(userInput) || 0;
+            }
+            main();
+        break;
+        case "2024-data-set":
+            monthIndex = dataSet2024.findIndex(entry => entry.Month === dsMonth);
+            if(monthIndex !== -1){
+                dataSet2024[monthIndex].Sales = parseInt(userInput) || 0;
+            }
+            main();
+        break;
+    }
+};
 
+// Logic btnNextYear & btnPreviousYear
+document.getElementById('btnNextYear').addEventListener('click', function(){
+    nextYear();
+    setTimeout(() => {
+        main();
+    }, 100);
+});
+document.getElementById('btnPreviousYear').addEventListener('click', function(){
+    previousYear();
+    setTimeout(() => {
+        main();
+    }, 100);
+});
+let yearPicker = document.getElementById('dm-year-picker');
+let selectedYearIndex;
+
+function nextYear(){
+    selectedYearIndex = yearPicker.selectedIndex;
+    // Calculate the next index (looping back to the first if at the end)
+    let nextIndex = (selectedYearIndex + 1) % 12;
+    yearPicker.value = yearPicker.options[nextIndex].value;
+    changeDataSet();
+}
+function previousYear(){
+    selectedYearIndex = yearPicker.selectedIndex;
+    // Calculate the next index (looping back to the first if at the end)
+    let previousIndex = (selectedYearIndex - 1 + 12) % 12;
+    yearPicker.value = yearPicker.options[previousIndex].value;
+    changeDataSet();
+}
+
+// Logic btnNextMonth & btnPreviousMonth
+document.getElementById('btnNextMonth').addEventListener('click', nextMonth);
+document.getElementById('btnPreviousMonth').addEventListener('click', previousMonth);
+let monthPicker = document.getElementById('dm-month-picker');
+let selectedMonthIndex;
+
+function nextMonth(){
+    selectedMonthIndex = monthPicker.selectedIndex;
+    // Calculate the next index (looping back to the first if at the end)
+    let nextIndex = (selectedMonthIndex + 1) % 12;
+    monthPicker.value = monthPicker.options[nextIndex].value;
+}
+function previousMonth(){
+    selectedMonthIndex = monthPicker.selectedIndex;
+    // Calculate the next index (looping back to the first if at the end)
+    let previousIndex = (selectedMonthIndex - 1) % 12;
+    monthPicker.value = monthPicker.options[previousIndex].value;
+}

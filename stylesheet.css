@@ -284,14 +284,23 @@ div#analytics-container{
     margin: 1rem;
     flex-direction: column;
     gap: 1rem;
-}
-.year-selector-container{
     margin-bottom: 2rem;
 }
 .month-input-container{
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+.month-selector-continer,
+.year-input-container{
+    display: flex;
+    gap: 1rem;
+}
+select#dm-month-picker,
+select#dm-year-picker{
+    display: flex;
+    width: 100%;
+    margin-right: auto;
 }
 .input-button-container{
     display: flex;
@@ -311,8 +320,21 @@ option, select{
 }
 select:focus,
 #valueInput:focus,
-button#addMonthValue:focus{
+button#addMonthValue:focus,
+button#btnPreviousMonth:focus,
+button#btnNextMonth:focus,
+button#btnPreviousYear:focus,
+button#btnNextYear:focus{
     outline: 1px solid var(--hover-color);
+}
+button#btnPreviousMonth,
+button#btnNextMonth,
+button#btnPreviousYear,
+button#btnNextYear{
+    font-size: var(--analytics-label-size);
+    background-color: var(--nav-hover-color);
+    color: var(--text-color-white);
+    border: 1px solid var(--border-color);
 }
 button#addMonthValue{
     font-size: var(--analytics-label-size);
@@ -321,10 +343,14 @@ button#addMonthValue{
     color: var(--text-color-white);
     border: 1px solid var(--border-color);
 }
-button#addMonthValue:hover{
+button#addMonthValue:hover,
+button#btnPreviousMonth:hover,
+button#btnNextMonth:hover{
     background-color: #574cad; 
 }
-button#addMonthValue:active{
+button#addMonthValue:active,
+button#btnPreviousMonth:active,
+button#btnNextMonth:active{
     scale: 0.9;
 }
 #notes-container{
