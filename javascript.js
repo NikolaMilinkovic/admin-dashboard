@@ -282,14 +282,15 @@ statBoxes.forEach(statBox =>{
     statBox.addEventListener('click', function() {
 
         // Copies the isntance of text
-        let copyText = this.querySelector('.copyOnClick').innerText;
+        let copyText = `${this.querySelector('.stat-box-header').innerText} ${this.querySelector('.stat-box-header-2').innerText}: ${this.querySelector('.copyOnClick').innerText}`;
         const copyContent = async () => {
             try{
                 if (isFunctionRunning === true)
                     return;
-                await navigator.clipboard.writeText(copyText);
-                isFunctionRunning = true;
+                    await navigator.clipboard.writeText(copyText);
+                    isFunctionRunning = true;
 
+                copyText = this.querySelector('.copyOnClick').innerText;
                 // Color change & text display
                 this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
                 this.querySelector('.copyOnClick').innerText = 'Value copied!';
