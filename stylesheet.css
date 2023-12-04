@@ -236,7 +236,7 @@ div#analytics-container{
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 3fr;
-    min-width: 700px;
+    min-width: 750px;
 }
 .analytics-data-container, .diagram-container {
     display: grid;
@@ -276,6 +276,7 @@ div#analytics-container{
 .analytics-input-container{
     border-left: 1px solid var(--border-color); 
     color: var(--text-color-white);
+    max-width: 350px;
 }
 .analytics-input-container>*{
     color: var(--text-color-white);
