@@ -25,7 +25,7 @@ const width = container.node().clientWidth;
 const height = container.node().clientHeight;
 
 // Data sets for each year
-const dataSet2021 = [
+const chartData = [[
     { Month: "Jan", Sales: 26 },
     { Month: "Feb", Sales: 43 },
     { Month: "Mar", Sales: 33 },
@@ -38,8 +38,7 @@ const dataSet2021 = [
     { Month: "Oct", Sales: 48 },
     { Month: "Nov", Sales: 76 },
     { Month: "Dec", Sales: 98 }
-];
-const dataSet2022 = [
+],[
     { Month: "Jan", Sales: 126 },
     { Month: "Feb", Sales: 143 },
     { Month: "Mar", Sales: 110 },
@@ -52,8 +51,7 @@ const dataSet2022 = [
     { Month: "Oct", Sales: 142 },
     { Month: "Nov", Sales: 122 },
     { Month: "Dec", Sales: 110 }
-];
-const dataSet2023 = [
+],[
     { Month: "Jan", Sales: 145 },
     { Month: "Feb", Sales: 134 },
     { Month: "Mar", Sales: 110 },
@@ -66,8 +64,7 @@ const dataSet2023 = [
     { Month: "Oct", Sales: 142 },
     { Month: "Nov", Sales: 102 },
     { Month: "Dec", Sales: 170 }
-];
-const dataSet2024 = [
+],[
     { Month: "Jan", Sales: 145 },
     { Month: "Feb", Sales: 134 },
     { Month: "Mar", Sales: 0 },
@@ -80,37 +77,81 @@ const dataSet2024 = [
     { Month: "Oct", Sales: 0 },
     { Month: "Nov", Sales: 0 },
     { Month: "Dec", Sales: 0 }
+]
 ];
+
+function createNewDataSet(){
+    chartData.push([
+        { Month: "Jan", Sales: 0 },
+        { Month: "Feb", Sales: 0 },
+        { Month: "Mar", Sales: 0 },
+        { Month: "Apr", Sales: 0 },
+        { Month: "May", Sales: 0 },
+        { Month: "Jun", Sales: 0 },
+        { Month: "Jul", Sales: 0 },
+        { Month: "Aug", Sales: 0 },
+        { Month: "Sep", Sales: 0 },
+        { Month: "Oct", Sales: 0 },
+        { Month: "Nov", Sales: 0 },
+        { Month: "Dec", Sales: 0 }
+    ])
+}
+
+// ===============================[START OF CREATE NEW YEAR LOGIC]===============================
+
+// Logic for adding new year to the data set
+document.getElementById('addYearValue').addEventListener('click', addNewYear);
+
+function addNewYear(){
+    createNewDataSet();
+    const dropdown = document.getElementById('dm-year-picker');
+    const newOption = document.createElement('option');
+    newOption.value = chartData.length-1;
+    newOption.text = document.getElementById('valueInputYear').value;
+    dropdown.appendChild(newOption);
+    clearYearInput();
+    suggestLatestYear();
+    console.log(newOption.value)
+}
+
+// Clears the year input field
+function clearYearInput(){
+    const inputField = document.getElementById('valueInputYear');
+    inputField.value = '';
+    inputField.focus();
+}
+
+// Suggests the latest year in the add year input field
+suggestLatestYear();
+function suggestLatestYear(){
+    const dropdown = document.getElementById('dm-year-picker');
+    const suggestedYear = dropdown.lastElementChild.text;
+    document.getElementById('valueInputYear').value = parseInt(suggestedYear) + 1;
+}
+// ===============================[END OF CREATE NEW YEAR LOGIC]===============================
+
+
+
 
 // Logic for changing chart data sets
 document.getElementById('dm-year-picker').addEventListener("change", changeDataSet);
+
+// Funkcija za promenu data seta i ispis main funkcije sa tim vrednostima
 function changeDataSet (){
     const selectedYear = document.getElementById('dm-year-picker').value;
-    switch(selectedYear){
-        case "2021-data-set":
-
-            salesChartData = dataSet2021;
-            main();
-        break;
-        case "2022-data-set":
-            salesChartData = dataSet2022;
-            main();
-        break;
-        case "2023-data-set":
-            salesChartData = dataSet2023;
-            main();
-        break;
-        case "2024-data-set":
-            salesChartData = dataSet2024;
-            main();
-        break;
+    salesChartData = chartData[parseInt(selectedYear)];
+    console.log(parseInt(selectedYear));
+    console.log(chartData[parseInt(selectedYear)]);
+    if (salesChartData) {
+        main();
     }
+    else
+        console.log("salesChartDat not found");
 }
 
-
-// Data set
+// ===============================[START OF DIAGRAM GENERATION LOGIC]===============================
+// Varijabla koja se koristi prilikom izrade diagrama
 var salesChartData = [];
-
 const xValue = (data)=> data.Month;
 const yValue = (data)=> data.Sales;
 const margin = {
@@ -119,11 +160,12 @@ const margin = {
     bottom: 40, 
     left: 40,
 };
+// Kreiranje SVG-a
 const svg = select('.diagram-container')
             .append('svg')
             .attr('height', height)
             .attr('width', width);
-
+            
 const main = () => {
     const data = salesChartData;
 
@@ -270,141 +312,28 @@ function getQuarter(month) {
 }
 // Innitializes the default value of the chart
 changeDataSet();
-// End of analytics-container diagram
+// ===============================[END OF DIAGRAM GENERATION LOGIC]===============================
 
-// Code that handles copy upon click on Q1,Q2,Q3,Q4 total data box
-const statBoxes = Array.from(document.getElementsByClassName('stat-box'));
 
-let isFunctionRunning = false;
-
-// Adds event listener for each box
-statBoxes.forEach(statBox =>{
-    statBox.addEventListener('click', function() {
-
-        // Copies the isntance of text
-        let copyText = `${this.querySelector('.stat-box-header').innerText} ${this.querySelector('.stat-box-header-2').innerText}: ${this.querySelector('.copyOnClick').innerText}`;
-        const copyContent = async () => {
-            try{
-                if (isFunctionRunning === true)
-                    return;
-                    await navigator.clipboard.writeText(copyText);
-                    isFunctionRunning = true;
-
-                copyText = this.querySelector('.copyOnClick').innerText;
-                // Color change & text display
-                this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
-                this.querySelector('.copyOnClick').innerText = 'Value copied!';
-                this.querySelector('.copyOnClick').style.fontSize = '18px';
-                this.style.backgroundColor = '#695BD1';
-                this.style.color = '#d4d4d4';
-                setTimeout(() => {
-                    this.style.backgroundColor = '';
-                    this.style.color = '';
-                    this.querySelector('.copyOnClick').innerText = copyText;
-                    this.querySelector('.copyOnClick').style.fontSize = '';
-                    isFunctionRunning = false;
-                }, 500);
-            }
-            catch(err){
-                console.error('Copy to clipboard failed: ', err);
-            }
-        }
-        copyContent();
-    });
-})
-
-// Code that handles copy upon click on Q comparison boxes
-const QCompBoxes = Array.from(document.getElementsByClassName('q-comparison-container'));
-
-// Adds event listener for each box
-QCompBoxes.forEach(qBox =>{
-    qBox.addEventListener('click', function() {
-
-        // Copies the isntance of text
-        let copyText = `${this.querySelector('.q-comparison-label').innerText} ${this.querySelector('.q-comparison').innerText}`;
-        const copyContent = async () => {
-            try{
-                if (isFunctionRunning === true)
-                    return;
-                await navigator.clipboard.writeText(copyText);
-                isFunctionRunning = true;
-                copyText = this.querySelector('.q-comparison').innerText;
-
-                // Color change & text display
-                this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
-                this.querySelector('.q-comparison').innerText = 'Value copied!';
-                this.querySelector('.q-comparison').style.fontSize = '18px';
-                let getColor = this.querySelector('.q-comparison').style.color;
-                let getLabelColor = this.querySelector('.q-comparison-label').style.color;
-                this.querySelector('.q-comparison').style.color = '#d4d4d4';
-                this.querySelector('.q-comparison-label').style.color = '#d4d4d4';
-                this.style.backgroundColor = '#695BD1';
-                this.style.color = '#d4d4d4';
-                setTimeout(() => {
-                    this.style.backgroundColor = '';
-                    this.style.color = '';
-                    this.querySelector('.q-comparison').innerText = copyText;
-                    this.querySelector('.q-comparison').style.fontSize = '';
-                    this.querySelector('.q-comparison').style.color = getColor;
-                    this.querySelector('.q-comparison-label').style.color = getLabelColor;
-                    isFunctionRunning = false;
-
-                }, 500);
-            }
-            catch(err){
-                console.error('Copy to clipboard failed: ', err);
-            }
-        }
-        copyContent();
-    });
-})
-
+// ===============================[START OF ADD MONTH VALUE LOGIC]===============================
 // Logic for adding new values to diagram
 document.getElementById('addMonthValue').addEventListener('click', addMonthValue);
 function addMonthValue(){
-    let dsYear = document.getElementById('dm-year-picker').value;
-    let dsMonth = document.getElementById('dm-month-picker').value;
+    let selectedYear = document.getElementById('dm-year-picker').value;
+    let selectedMonth = document.getElementById('dm-month-picker').value;
     let userInput = document.getElementById('valueInput').value;
     let monthIndex;
-    
-    switch(dsYear){
-        case "2021-data-set":
-            monthIndex = dataSet2021.findIndex(entry => entry.Month === dsMonth);
-            if(monthIndex !== -1){
-                dataSet2021[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
-            }
-            main();
-            clearMonthInput();
-            calcQStats();
-        break;
-        case "2022-data-set":
-            monthIndex = dataSet2022.findIndex(entry => entry.Month === dsMonth);
-            if(monthIndex !== -1){
-                dataSet2022[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
-            }
-            main();
-            clearMonthInput();
-            calcQStats();
-        break;
-        case "2023-data-set":
-            monthIndex = dataSet2023.findIndex(entry => entry.Month === dsMonth);
-            if(monthIndex !== -1){
-                dataSet2023[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
-            }
-            main();
-            clearMonthInput();
-            calcQStats();
-        break;
-        case "2024-data-set":
-            monthIndex = dataSet2024.findIndex(entry => entry.Month === dsMonth);
-            if(monthIndex !== -1){
-                dataSet2024[monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
-            }
-            main();
-            clearMonthInput();
-            calcQStats();
-        break;
+    console.log(selectedMonth)
+
+    monthIndex = chartData[parseInt(selectedYear)].findIndex(entry => entry.Month === selectedMonth);
+    console.log(chartData[parseInt(selectedYear)]);
+    if(monthIndex !== -1){
+        chartData[parseInt(selectedYear)][monthIndex].Sales = Math.abs(parseInt(userInput)) || 0;
     }
+    main();
+    clearMonthInput();
+    calcQStats();
+    
 };
 
 // Clears the month input field
@@ -413,6 +342,8 @@ function clearMonthInput(){
     inputField.value = '';
     inputField.focus();
 }
+// ===============================[END OF ADD MONTH VALUE LOGIC]===============================
+
 
 // Logic btnNextYear & btnPreviousYear
 document.getElementById('btnNextYear').addEventListener('click', function(){
@@ -530,28 +461,104 @@ function calculatePercentageDifference(firstValue, secondValue) {
     }
 }
 
-// Logic for adding new year to the data set
-// Very difficult for now and my current knowledge level
-// document.getElementById("valueInputYear").disabled = true;
+// ===============================[START OF COPY ON CLICK LOGIC]===============================
 
-document.getElementById('addYearValue').addEventListener('click', addNewYear);
+// Code that handles copy upon click on Q1,Q2,Q3,Q4 total data box
+const statBoxes = Array.from(document.getElementsByClassName('stat-box'));
 
-function addNewYear(){
-    dsYear.value = "new-data-set";
-    clearYearInput();
-}
+let isFunctionRunning = false;
 
-// Clears the year input field
-function clearYearInput(){
-    const inputField = document.getElementById('valueInputYear');
-    inputField.value = '';
-    inputField.focus();
-}
+// Adds event listener for each box
+statBoxes.forEach(statBox =>{
+    statBox.addEventListener('click', function() {
 
+        // Copies the isntance of text
+        let copyText = `${this.querySelector('.stat-box-header').innerText} ${this.querySelector('.stat-box-header-2').innerText}: ${this.querySelector('.copyOnClick').innerText}`;
+        const copyContent = async () => {
+            try{
+                if (isFunctionRunning === true)
+                    return;
+                    await navigator.clipboard.writeText(copyText);
+                    isFunctionRunning = true;
+
+                copyText = this.querySelector('.copyOnClick').innerText;
+                // Color change & text display
+                this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
+                this.querySelector('.copyOnClick').innerText = 'Value copied!';
+                this.querySelector('.copyOnClick').style.fontSize = '18px';
+                this.style.backgroundColor = '#695BD1';
+                this.style.color = '#d4d4d4';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
+                    this.querySelector('.copyOnClick').innerText = copyText;
+                    this.querySelector('.copyOnClick').style.fontSize = '';
+                    isFunctionRunning = false;
+                }, 500);
+            }
+            catch(err){
+                console.error('Copy to clipboard failed: ', err);
+            }
+        }
+        copyContent();
+    });
+})
+
+// Code that handles copy upon click on Q comparison boxes
+const QCompBoxes = Array.from(document.getElementsByClassName('q-comparison-container'));
+
+// Adds event listener for each box
+QCompBoxes.forEach(qBox =>{
+    qBox.addEventListener('click', function() {
+
+        // Copies the isntance of text
+        let copyText = `${this.querySelector('.q-comparison-label').innerText} ${this.querySelector('.q-comparison').innerText}`;
+        const copyContent = async () => {
+            try{
+                if (isFunctionRunning === true)
+                    return;
+                await navigator.clipboard.writeText(copyText);
+                isFunctionRunning = true;
+                copyText = this.querySelector('.q-comparison').innerText;
+
+                // Color change & text display
+                this.style.transition = 'background-color 0.2s ease-in-out, color 0.2s ease-in-out';
+                this.querySelector('.q-comparison').innerText = 'Value copied!';
+                this.querySelector('.q-comparison').style.fontSize = '18px';
+                let getColor = this.querySelector('.q-comparison').style.color;
+                let getLabelColor = this.querySelector('.q-comparison-label').style.color;
+                this.querySelector('.q-comparison').style.color = '#d4d4d4';
+                this.querySelector('.q-comparison-label').style.color = '#d4d4d4';
+                this.style.backgroundColor = '#695BD1';
+                this.style.color = '#d4d4d4';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
+                    this.querySelector('.q-comparison').innerText = copyText;
+                    this.querySelector('.q-comparison').style.fontSize = '';
+                    this.querySelector('.q-comparison').style.color = getColor;
+                    this.querySelector('.q-comparison-label').style.color = getLabelColor;
+                    isFunctionRunning = false;
+
+                }, 500);
+            }
+            catch(err){
+                console.error('Copy to clipboard failed: ', err);
+            }
+        }
+        copyContent();
+    });
+})
+// ===============================[END OF COPY ON CLICK LOGIC]===============================
+
+
+
+
+// ===============================[START OF CARDS LOGIC AND ANALYTICS DISPLAY]===============================
 document.getElementById('option1').classList.add('active');
 document.getElementById('default-svg').style.filter = 'invert(35%) sepia(66%) saturate(506%) hue-rotate(207deg) brightness(105%) contrast(112%)';
 
-// Chart select cards logic
+// Chart select cards logic & analytics container display
 document.addEventListener('DOMContentLoaded', function () {
 
 const cards = document.querySelectorAll('.card');
@@ -581,9 +588,35 @@ const cards = document.querySelectorAll('.card');
         });
     });
 
-    function handleClick(optionId) {
-        console.log('Clicked option:', optionId);
+    function removeAllAttributes() {
+        svg.selectAll('.tick line').remove();
+        svg.selectAll('circle').remove();
+        svg.selectAll('text').remove();
+        svg.selectAll('path').remove();
+    }
 
-      }
+
+    let selectedYear = document.getElementById('dm-year-picker').value;
+    function handleClick(optionId) {
+        switch(optionId){
+            case "option1":
+                removeAllAttributes();
+                main();
+                changeDataSet();
+                calcQStats();
+            break;
+            case "option2":
+                removeAllAttributes();
+            break;
+            case "option3":
+                removeAllAttributes();
+            break;
+            case "option4":
+                removeAllAttributes();
+            break;
+        }
+
+    }
 });
+// ===============================[END OF CARDS LOGIC AND ANALYTICS DISPLAY]===============================
 
