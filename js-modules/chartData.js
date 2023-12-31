@@ -121,28 +121,122 @@ const earningsPerMonth = [
 ];
 
 
+let saleDropdownOptions = [[0, 2021], [1, 2022], [2, 2023], [3, 2024]];
+let earningsDropdownOptions = [[0, 2021], [1, 2022], [2, 2023], [3, 2024]];
+let chartDataYears = saleDropdownOptions;
 
-export function createNewDataSet(activeCardId){
-    chartData.push([
-        { Month: "Jan", Sales: 0 },
-        { Month: "Feb", Sales: 0 },
-        { Month: "Mar", Sales: 0 },
-        { Month: "Apr", Sales: 0 },
-        { Month: "May", Sales: 0 },
-        { Month: "Jun", Sales: 0 },
-        { Month: "Jul", Sales: 0 },
-        { Month: "Aug", Sales: 0 },
-        { Month: "Sep", Sales: 0 },
-        { Month: "Oct", Sales: 0 },
-        { Month: "Nov", Sales: 0 },
-        { Month: "Dec", Sales: 0 }
-    ])
+
+export function createNewDataSet(activeCardId) {
+    switch (activeCardId) {
+        case "option1":
+            console.log("option 1 pushed")
+            chartData.push([
+                { Month: "Jan", Sales: 0 },
+                { Month: "Feb", Sales: 0 },
+                { Month: "Mar", Sales: 0 },
+                { Month: "Apr", Sales: 0 },
+                { Month: "May", Sales: 0 },
+                { Month: "Jun", Sales: 0 },
+                { Month: "Jul", Sales: 0 },
+                { Month: "Aug", Sales: 0 },
+                { Month: "Sep", Sales: 0 },
+                { Month: "Oct", Sales: 0 },
+                { Month: "Nov", Sales: 0 },
+                { Month: "Dec", Sales: 0 }
+            ])
+            chartDataYears = saleDropdownOptions; // Create a copy of the array
+            chartDataYears.push([chartDataYears[chartDataYears.length - 1][0] + 1, chartDataYears[chartDataYears.length - 1][1] + 1]);
+            saleDropdownOptions = chartDataYears;
+            removeYearOptions();
+            getYearSelection();
+            break;
+        case "option2":
+            console.log("option 2 pushed")
+            earningsPerMonth.push([
+                { Month: "Jan", Earnings: 0 },
+                { Month: "Feb", Earnings: 0 },
+                { Month: "Mar", Earnings: 0 },
+                { Month: "Apr", Earnings: 0 },
+                { Month: "May", Earnings: 0 },
+                { Month: "Jun", Earnings: 0 },
+                { Month: "Jul", Earnings: 0 },
+                { Month: "Aug", Earnings: 0 },
+                { Month: "Sep", Earnings: 0 },
+                { Month: "Oct", Earnings: 0 },
+                { Month: "Nov", Earnings: 0 },
+                { Month: "Dec", Earnings: 0 }
+            ])
+            chartDataYears = earningsDropdownOptions.slice(); // Create a copy of the array
+            chartDataYears.push([chartDataYears[chartDataYears.length - 1][0] + 1, chartDataYears[chartDataYears.length - 1][1] + 1]);
+            earningsDropdownOptions = chartDataYears.slice();
+            removeYearOptions();
+            getYearSelection();
+            break;
+        case "option3":
+            // ...
+            break;
+        case "option4":
+            // ...
+            break;
+    }
 }
 
+// Assigns
+const dropdown = document.getElementById('dm-year-picker');
+export function updateDataSet(activeCardId){
+    switch(activeCardId){
+        case "option1":
+            console.log("Chart Data Years = saleDropdownOptions");
+            chartDataYears = saleDropdownOptions;
+            return;
+        break;
+        case "option2":
+            console.log("Chart Data Years = earningsDropdownOptions");
+            chartDataYears = earningsDropdownOptions;
+            return;
+        break;
+        case "option3":
+            return;
+        break;
+        case "option4":
+            return;
+        break;
+    }
+}
+
+
+// Removed and appends again all years to dropdown
+export function updateDropdown(){
+    console.log("UpdateDropdown se izvrsio.")
+    removeYearOptions();
+    getYearSelection();
+}
+
+// Brise sve opcije iz dropdown liste
+export function removeYearOptions(){
+    while (dropdown.options.length > 0) {
+        dropdown.remove(0);
+    }
+}
+
+// Uzima vrednost godina iz niza i dodaje ih kao opcije u dropdown
+export function getYearSelection() {
+    for (let i = 0; i < chartDataYears.length; i++) {
+        const newOption = document.createElement('option');
+        newOption.value = parseInt(chartDataYears[i][0]);
+        newOption.text = chartDataYears[i][1].toString();
+        dropdown.appendChild(newOption);
+        console.log(chartDataYears.length);
+    }
+    // dropdown.remove(dropdown.length-1);
+}
+
+// Menja Data Niz na osnovu izabrane kartice
 export function getChartData(activeCardId){
 
     switch(activeCardId){
         case "option1":
+
             return chartData;
         break;
         case "option2":

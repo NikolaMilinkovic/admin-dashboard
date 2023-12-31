@@ -18,18 +18,18 @@ const chartData = getChartData();
 var salesChartData = [];
 
 
-export const generateBarChart = () => {
+export const generatePieChart = () => {
     let width = container.node().clientWidth;
     let height = container.node().clientHeight;
+    let colorScale = d3.scaleOrdinal(['#8BC1F7'],['#519DE9'],['#06C'],['#004B95']);
     let data;
-    let xValue;
-    let yValue;
+    let radius
     let margin;
 
 
-    // Glavna funkcija za kreiranje bar charta na osvnou poslatih vrednosti
+    // Glavna funkcija za kreiranje pie charta na osvnou poslatih vrednosti
     const barChart = (selection) => {  
-    // Code responsible for generating the bar chart    
+    // Code responsible for generating the pie chart    
         const x = scaleBand()
         .domain(data.map(xValue))
         .range([margin.left, width - margin.right])
@@ -112,30 +112,33 @@ export const generateBarChart = () => {
     
 
     // Width setter
-    barChart.width = function(value){
+    pieChart.width = function(value){
         return arguments.length ? ((width = +value), barChart) : width;
     };
     // Height setter
-    barChart.height = function(value){
+    pieChart.height = function(value){
         return arguments.length ? ((height = +value), barChart) : height;
     }
     // Data setter
-    barChart.data = function(value){
+    pieChart.data = function(value){
         return arguments.length ? ((data = value), barChart) : data;
     }
     // xValue setter
-    barChart.xValue = function(value){
+    pieChart.xValue = function(value){
         return arguments.length ? ((xValue = value), barChart) : xValue;
     }
     // yValue setter
-    barChart.yValue = function(value){
+    pieChart.yValue = function(value){
         return arguments.length ? ((yValue = value), barChart) : yValue;
     }
     // margin setter
-    barChart.margin = function(value){
+    pieChart.margin = function(value){
         return arguments.length ? ((margin = value), barChart) : margin;
     }
 
 
-    return barChart;
+    return pieChart;
 };
+
+
+

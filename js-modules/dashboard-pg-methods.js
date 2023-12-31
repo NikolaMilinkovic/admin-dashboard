@@ -6,23 +6,47 @@
  */
 
 import { main, removeAllAttributes, svg } from './chartConstructors.js';
-import { createNewDataSet, getChartData } from './chartData.js';
+import { createNewDataSet, getChartData, getYearSelection, updateDropdown, updateDataSet } from './chartData.js';
 import { generateBarChart  } from './barChart.js';
+import { generatePieChart } from './pieChart.js';
 const { select } = d3;
+getYearSelection();
+
+// Adds event listener to dropdown, when new year is clicked this will run
+document.getElementById('dm-year-picker').addEventListener("change", function() {
+    plotChart(activeCardId);
+  });
+
 
 // On click methods that return the id of the button
-let activeCardId = 'option1';
+var activeCardId = 'option1';
+
 document.getElementById('option1').addEventListener("click", getActiveCardId =>{
     activeCardId = 'option1';
+    // Setuje odgovarajuci niz podataka
+    updateDataSet(activeCardId);
+    // Brise i opet ispisuje dropdown
+    updateDropdown();
+    // Sugestuje narednu godinu za add
+    suggestLatestYear();
 });
 document.getElementById('option2').addEventListener("click", getActiveCardId =>{
     activeCardId = 'option2';
+    updateDataSet(activeCardId);
+    updateDropdown();
+    suggestLatestYear();
 });
 document.getElementById('option3').addEventListener("click", getActiveCardId =>{
     activeCardId = 'option3';
-});
+    updateDataSet(activeCardId);
+    updateDropdown();
+    suggestLatestYear();
+    });
 document.getElementById('option4').addEventListener("click", getActiveCardId =>{
     activeCardId = 'option4';
+    updateDataSet(activeCardId);
+    updateDropdown();
+    suggestLatestYear();
 });
 
 let chartData = getChartData(activeCardId);
@@ -30,15 +54,17 @@ var salesChartData = [];
 
 // Logic for adding new year to the data set
 export function addNewYear(){
-    createNewDataSet();
+    createNewDataSet(activeCardId);
     const dropdown = document.getElementById('dm-year-picker');
     const newOption = document.createElement('option');
-    newOption.value = chartData.length-1;
+    newOption.value = chartData.length;
     newOption.text = document.getElementById('valueInputYear').value;
     dropdown.appendChild(newOption);
     clearYearInput();
+    updateDropdown();
+    dropdown.options[dropdown.options.length - 1].selected = true;
     suggestLatestYear();
-    
+    plotChart(activeCardId);
 }
 
 // Clears the year input field
@@ -59,7 +85,7 @@ export function suggestLatestYear(){
 // Funkcija za promenu data seta i ispis main funkcije sa tim vrednostima
 export function changeDataSet(optionId){
     const selectedYear = document.getElementById('dm-year-picker').value;
-    
+
     switch(optionId){
         case "option1":
             chartData = getChartData(activeCardId);
@@ -85,7 +111,8 @@ export function changeDataSet(optionId){
 }
 
 // Function for generating charts => Used for buttons next & previous year       
-function plotChart(activeCardId){
+export function plotChart(activeCardId){
+
     switch(activeCardId){
         case "option1":
             removeAllAttributes();
@@ -98,7 +125,7 @@ function plotChart(activeCardId){
         break;
         case "option3":
             removeAllAttributes();
-            // generatePieChart();
+            pieChart(changeDataSet(activeCardId));
             // calcQStats();
         break;
         case "option4":
@@ -117,17 +144,24 @@ let selectedYearIndex;
 export function nextYear(){
     selectedYearIndex = yearPicker.selectedIndex;
     // Calculate the next index (looping back to the first if at the end)
-    let nextIndex = (selectedYearIndex + 1) % 12;
-    yearPicker.value = yearPicker.options[nextIndex].value;
+    const optionElements = yearPicker.querySelectorAll('option');
+
+        // Calculate the next index (looping back to the first if at the end)
+        let nextIndex = (selectedYearIndex + 1) % optionElements.length;
+        yearPicker.value = optionElements[nextIndex].value;
     removeAllAttributes();
     plotChart(activeCardId);
     calcQStats();
 }
-export function previousYear(){
+
+export function previousYear(){   
     selectedYearIndex = yearPicker.selectedIndex;
     // Calculate the next index (looping back to the first if at the end)
-    let previousIndex = (selectedYearIndex - 1 + 12) % 12;
-    yearPicker.value = yearPicker.options[previousIndex].value;
+    const optionElements = yearPicker.querySelectorAll('option');
+
+        // Calculate the next index (looping back to the first if at the end)
+        let nextIndex = (selectedYearIndex - 1 + optionElements.length) % optionElements.length;
+        yearPicker.value = optionElements[nextIndex].value;
     removeAllAttributes();
     plotChart(activeCardId);
     calcQStats();
@@ -308,9 +342,10 @@ const cards = document.querySelectorAll('.card');
     removeAllAttributes();
 
 
-    let selectedYear = document.getElementById('dm-year-picker').value;
     function handleClick(optionId) {
+
         switch(optionId){
+            
             case "option1":
                 removeAllAttributes();
                 main(changeDataSet(optionId));
@@ -323,7 +358,7 @@ const cards = document.querySelectorAll('.card');
             break;
             case "option3":
                 removeAllAttributes();
-                // generatePieChart();
+                pieChart(changeDataSet(optionId));
                 // calcQStats();
             break;
             case "option4":
@@ -344,6 +379,7 @@ const cards = document.querySelectorAll('.card');
 const container = select('.diagram-container');
 const width = container.node().clientWidth;
 const height = container.node().clientHeight;
+
 function barChart(data) {
     svg.call(generateBarChart()
             .width(width)
@@ -351,6 +387,26 @@ function barChart(data) {
             .data(data)
             .xValue ((data)=> data.Month)
             .yValue ((data)=> data.Earnings)
+            .margin({
+                top: 20,
+                right: 20,
+                bottom: 40,
+                left: 50,
+            })
+        );  
+}
+// ===============================[END OF BAR CHART GENERATION DATA & LOGIC]===============================
+
+
+
+// ===============================[START OF PIE CHART GENERATION DATA & LOGIC]===============================
+
+function pieChart(data) {
+    svg.call(generatePieChart()
+            .width(width)
+            .height(height)
+            .data(data)
+            .radius(500)
             .margin({
                 top: 20,
                 right: 20,

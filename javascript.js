@@ -21,7 +21,6 @@ import { addNewYear,
 // Search icon button event listener
 document.getElementById("submit-btn").addEventListener("click", submitSearchBtn);
 document.getElementById('addYearValue').addEventListener('click', addNewYear);
-document.getElementById('dm-year-picker').addEventListener("change", changeDataSet);
 document.getElementById('addMonthValue').addEventListener('click', addMonthValue);
 
 
@@ -36,15 +35,9 @@ suggestLatestYear();
 
 document.getElementById('btnNextYear').addEventListener('click', function(){
     nextYear();
-    // setTimeout(() => {
-    //     changeDataSet();
-    // }, 100);
 });
 document.getElementById('btnPreviousYear').addEventListener('click', function(){
     previousYear();
-    // setTimeout(() => {
-    //     changeDataSet();
-    // }, 100);
 });
 
 // Logic btnNextMonth & btnPreviousMonth
