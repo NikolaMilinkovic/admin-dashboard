@@ -14,6 +14,6 @@ Admin Dashboard mockup.
 - Responsive design
 
 ## 💻 Built With
-- Tech [![Client-Side](https://skillicons.dev/icons?i=js&perline=1)]
-- Tech [![Client-Side](https://skillicons.dev/icons?i=html&perline=1)]
-- Tech [![Client-Side](https://skillicons.dev/icons?i=css&perline=1)]
+- ![javascript](https://skillicons.dev/icons?i=js&perline=1)
+- ![html](https://skillicons.dev/icons?i=html&perline=1)
+- ![css](https://skillicons.dev/icons?i=css&perline=1)
