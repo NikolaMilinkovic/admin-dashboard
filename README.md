@@ -1,5 +1,5 @@
 # Admin-Dashboard
-Admin Dashboard mockup.
+Admin Dashboard mockup. This website is currently under development.
 
 [Live Demo](https://nikolamilinkovic.github.io/admin-dashboard/) ✨
 
