@@ -9,6 +9,8 @@ Admin Dashboard mockup. This website is currently under development.
 - Multiple diagram types
 
 **🧭 Future Implementations**
+- Login/Session management
+- MongoDB for importing and storing data
 - More diagram types
 - All other features from the menu
 - Responsive design
